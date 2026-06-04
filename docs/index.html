@@ -3,13 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LibreOffice SwiftUI - 支持我们</title>
+    <title>LibreOffice SwiftUI</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Helvetica, Arial, sans-serif;
@@ -25,6 +21,38 @@
             max-width: 680px;
             width: 100%;
             padding: 40px 24px;
+        }
+
+        /* Lang toggle */
+        .lang-toggle {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            display: flex;
+            background: #141414;
+            border: 1px solid #222;
+            border-radius: 20px;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .lang-toggle button {
+            background: none;
+            border: none;
+            color: #666;
+            padding: 6px 14px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-toggle button.active {
+            background: #4A90D9;
+            color: #fff;
+        }
+
+        .lang-toggle button:hover:not(.active) {
+            color: #aaa;
         }
 
         /* Header */
@@ -94,7 +122,7 @@
             transition: width 1s ease;
         }
 
-        /* Donation methods */
+        /* Methods */
         .methods {
             display: flex;
             flex-direction: column;
@@ -139,17 +167,9 @@
             flex-shrink: 0;
         }
 
-        .method-icon.wechat {
-            background: #07C160;
-        }
-
-        .method-icon.alipay {
-            background: #1677FF;
-        }
-
-        .method-icon.stripe {
-            background: #635BFF;
-        }
+        .method-icon.wechat { background: #07C160; }
+        .method-icon.alipay { background: #1677FF; }
+        .method-icon.stripe { background: #635BFF; }
 
         .method-info h3 {
             font-size: 16px;
@@ -179,7 +199,7 @@
             border-color: #2a3a28;
         }
 
-        /* QR Code area */
+        /* QR */
         .qr-area {
             display: none;
             text-align: center;
@@ -187,9 +207,7 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .qr-area.active {
-            display: block;
-        }
+        .qr-area.active { display: block; }
 
         .qr-area img {
             max-width: 220px;
@@ -205,69 +223,27 @@
             margin-top: 12px;
         }
 
-        .qr-area .amount-hint {
-            font-size: 12px;
-            color: #4A90D9;
-            margin-top: 6px;
-        }
-
-        /* Suggested amounts */
-        .amounts {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-top: 16px;
-        }
-
-        .amount-btn {
-            padding: 10px;
-            background: #1a1a1a;
-            border: 1px solid #222;
-            border-radius: 10px;
-            color: #ccc;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .amount-btn:hover {
-            border-color: #4A90D9;
-            color: #fff;
-        }
-
-        .amount-btn.active {
-            background: #1a2440;
-            border-color: #4A90D9;
-            color: #4A90D9;
-        }
-
-        /* Stripe section */
+        /* Stripe */
         .stripe-section {
             display: none;
             animation: fadeIn 0.3s ease;
         }
 
-        .stripe-section.active {
-            display: block;
-        }
+        .stripe-section.active { display: block; }
 
-        .stripe-coming {
-            text-align: center;
-            padding: 30px;
-            color: #666;
-            font-size: 14px;
-        }
-
-        .stripe-coming .badge {
+        .stripe-btn {
             display: inline-block;
-            padding: 6px 14px;
-            background: #1a1a1a;
-            border: 1px solid #222;
-            border-radius: 20px;
-            font-size: 12px;
-            color: #888;
-            margin-bottom: 12px;
+            background: #635BFF;
+            color: white;
+            padding: 14px 32px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: background 0.2s;
         }
+
+        .stripe-btn:hover { background: #7A73FF; }
 
         /* Supporters */
         .supporters {
@@ -325,9 +301,7 @@
             font-size: 13px;
         }
 
-        .footer a:hover {
-            text-decoration: underline;
-        }
+        .footer a:hover { text-decoration: underline; }
 
         .footer .links {
             display: flex;
@@ -341,33 +315,36 @@
             color: #444;
         }
 
-        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Responsive */
         @media (max-width: 480px) {
             .container { padding: 24px 16px; }
             .header h1 { font-size: 22px; }
-            .amounts { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
 <body>
+    <!-- Language toggle -->
+    <div class="lang-toggle">
+        <button id="btn-zh" class="active" onclick="setLang('zh')">中文</button>
+        <button id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+
     <div class="container">
         <!-- Header -->
         <div class="header">
             <div class="icon">📄</div>
-            <h1>支持 LibreOffice SwiftUI</h1>
-            <p>一个用 SwiftUI 重写 LibreOffice macOS 前端的开源项目。<br>你的每一份支持都让这个项目走得更远。</p>
+            <h1 data-i18n="title"></h1>
+            <p data-i18n="subtitle"></p>
         </div>
 
         <!-- Monthly Goal -->
         <div class="progress-section">
             <div class="progress-label">
-                <span>月度目标</span>
+                <span data-i18n="goal_label"></span>
                 <span class="amount">¥150 / ¥1,000</span>
             </div>
             <div class="progress-bar">
@@ -378,58 +355,56 @@
         <!-- Payment Methods -->
         <div class="methods">
             <!-- WeChat -->
-            <div class="method-card" onclick="toggleMethod('wechat')">
+            <div class="method-card" onclick="toggleMethod('wechat', this)">
                 <div class="method-header">
                     <div class="method-icon wechat">💬</div>
                     <div class="method-info">
-                        <h3>微信支付</h3>
-                        <p>扫码即可，无需添加好友</p>
+                        <h3 data-i18n="wechat_title"></h3>
+                        <p data-i18n="wechat_desc"></p>
                     </div>
-                    <span class="method-badge recommended">推荐</span>
+                    <span class="method-badge recommended" data-i18n="badge_recommended"></span>
                 </div>
                 <div class="qr-area" id="qr-wechat">
-                    <img src="images/wechat-qr.png" alt="微信收款码" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22><rect fill=%22%231a1a1a%22 width=%22220%22 height=%22220%22/><text x=%22110%22 y=%22115%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2214%22>请放置微信收款码</text></svg>'">
-                    <p>打开微信扫一扫，金额自定</p>
+                    <img src="images/wechat-qr.png" alt="WeChat QR">
+                    <p data-i18n="wechat_scan"></p>
                 </div>
             </div>
 
             <!-- Alipay -->
-            <div class="method-card" onclick="toggleMethod('alipay')">
+            <div class="method-card" onclick="toggleMethod('alipay', this)">
                 <div class="method-header">
                     <div class="method-icon alipay">🔷</div>
                     <div class="method-info">
-                        <h3>支付宝</h3>
-                        <p>支持花呗、余额宝</p>
+                        <h3 data-i18n="alipay_title"></h3>
+                        <p data-i18n="alipay_desc"></p>
                     </div>
-                    <span class="method-badge">快捷</span>
+                    <span class="method-badge" data-i18n="badge_fast"></span>
                 </div>
                 <div class="qr-area" id="qr-alipay">
-                    <img src="images/alipay-qr.png" alt="支付宝收款码" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22><rect fill=%22%231a1a1a%22 width=%22220%22 height=%22220%22/><text x=%22110%22 y=%22115%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2214%22>请放置支付宝收款码</text></svg>'">
-                    <p>打开支付宝扫一扫，金额自定</p>
+                    <img src="images/alipay-qr.png" alt="Alipay QR">
+                    <p data-i18n="alipay_scan"></p>
                 </div>
             </div>
 
-            <!-- Stripe (International) -->
-            <div class="method-card" onclick="toggleMethod('stripe')">
+            <!-- Stripe -->
+            <div class="method-card" onclick="toggleMethod('stripe', this)">
                 <div class="method-header">
                     <div class="method-icon stripe">💳</div>
                     <div class="method-info">
-                        <h3>International (Card)</h3>
-                        <p>Visa / Mastercard / Apple Pay</p>
+                        <h3 data-i18n="stripe_title"></h3>
+                        <p data-i18n="stripe_desc"></p>
                     </div>
-                    <span class="method-badge">USD / HKD</span>
+                    <span class="method-badge" data-i18n="badge_hkd"></span>
                 </div>
                 <div class="stripe-section" id="stripe-section">
                     <div style="text-align: center; padding: 16px 0;">
-                        <p style="color: #888; font-size: 13px; margin-bottom: 16px;">支持 Visa、Mastercard、Apple Pay</p>
+                        <p style="color: #888; font-size: 13px; margin-bottom: 16px;" data-i18n="stripe_cards"></p>
                         <a href="https://buy.stripe.com/test_3cI5kEa9O55t0Kx05nes000"
                            target="_blank"
-                           style="display: inline-block; background: #635BFF; color: white; padding: 14px 32px; border-radius: 10px; text-decoration: none; font-size: 15px; font-weight: 600; transition: background 0.2s;"
-                           onmouseover="this.style.background='#7A73FF'"
-                           onmouseout="this.style.background='#635BFF'">
-                            💳 支持 $5.00 HKD
+                           class="stripe-btn">
+                            <span data-i18n="stripe_btn"></span>
                         </a>
-                        <p style="color: #555; margin-top: 12px; font-size: 12px;">点击后将跳转到 Stripe 安全支付页面</p>
+                        <p style="color: #555; margin-top: 12px; font-size: 12px;" data-i18n="stripe_note"></p>
                     </div>
                 </div>
             </div>
@@ -437,11 +412,11 @@
 
         <!-- Supporters -->
         <div class="supporters">
-            <h3>感谢这些支持者 ❤️</h3>
+            <h3 data-i18n="supporters_title"></h3>
             <div class="supporter-list">
                 <div class="supporter">
                     <span class="avatar">🫡</span>
-                    <span>成为第一个支持者</span>
+                    <span data-i18n="first_supporter"></span>
                 </div>
             </div>
         </div>
@@ -450,30 +425,95 @@
         <div class="footer">
             <div class="links">
                 <a href="https://github.com/Cass-ette/LibreOfficeSwiftUI" target="_blank">GitHub</a>
-                <a href="https://github.com/Cass-ette/libreoffice-swiftui" target="_blank">上游仓库</a>
+                <a href="https://github.com/Cass-ette/libreoffice-swiftui" target="_blank" data-i18n="link_upstream"></a>
                 <a href="https://github.com/LibreOffice/core" target="_blank">LibreOffice</a>
             </div>
-            <p class="license">
-                本项目基于 LibreOffice (MPL 2.0) 开发 · SwiftUI 前端采用 MIT 协议
-            </p>
+            <p class="license" data-i18n="license"></p>
         </div>
     </div>
 
     <script>
-        function toggleMethod(method) {
-            // 关闭所有
-            document.querySelectorAll('.method-card').forEach(card => {
-                card.classList.remove('active');
-            });
-            document.querySelectorAll('.qr-area').forEach(qr => {
-                qr.classList.remove('active');
-            });
-            document.querySelectorAll('.stripe-section').forEach(s => {
-                s.classList.remove('active');
+        const i18n = {
+            zh: {
+                title: '支持 LibreOffice SwiftUI',
+                subtitle: '一个用 SwiftUI 重写 LibreOffice macOS 前端的开源项目。<br>你的每一份支持都让这个项目走得更远。',
+                goal_label: '月度目标',
+                wechat_title: '微信支付',
+                wechat_desc: '扫码即可，无需添加好友',
+                wechat_scan: '打开微信扫一扫，金额自定',
+                alipay_title: '支付宝',
+                alipay_desc: '支持花呗、余额宝',
+                alipay_scan: '打开支付宝扫一扫，金额自定',
+                stripe_title: 'International (Card)',
+                stripe_desc: 'Visa / Mastercard / Apple Pay',
+                stripe_cards: '支持 Visa、Mastercard、Apple Pay',
+                stripe_btn: '💳 支持 $5.00 HKD',
+                stripe_note: '点击后将跳转到 Stripe 安全支付页面',
+                badge_recommended: '推荐',
+                badge_fast: '快捷',
+                badge_hkd: 'USD / HKD',
+                supporters_title: '感谢这些支持者 ❤️',
+                first_supporter: '成为第一个支持者',
+                link_upstream: '上游仓库',
+                license: '本项目基于 LibreOffice (MPL 2.0) 开发 · SwiftUI 前端采用 MIT 协议'
+            },
+            en: {
+                title: 'Support LibreOffice SwiftUI',
+                subtitle: 'An open-source project rewriting LibreOffice macOS frontend with SwiftUI.<br>Every contribution helps this project go further.',
+                goal_label: 'Monthly Goal',
+                wechat_title: 'WeChat Pay',
+                wechat_desc: 'Scan QR code, no friend request needed',
+                wechat_scan: 'Open WeChat and scan, choose your amount',
+                alipay_title: 'Alipay',
+                alipay_desc: 'Supports Huabei, Yu\'e Bao',
+                alipay_scan: 'Open Alipay and scan, choose your amount',
+                stripe_title: 'International (Card)',
+                stripe_desc: 'Visa / Mastercard / Apple Pay',
+                stripe_cards: 'Supports Visa, Mastercard, Apple Pay',
+                stripe_btn: '💳 Donate $5.00 HKD',
+                stripe_note: 'You will be redirected to Stripe secure checkout',
+                badge_recommended: 'Recommended',
+                badge_fast: 'Fast',
+                badge_hkd: 'USD / HKD',
+                supporters_title: 'Thanks to our supporters ❤️',
+                first_supporter: 'Be the first supporter',
+                link_upstream: 'Upstream',
+                license: 'Based on LibreOffice (MPL 2.0) · SwiftUI frontend under MIT License'
+            }
+        };
+
+        let currentLang = 'zh';
+
+        function detectLang() {
+            const lang = navigator.language || navigator.userLanguage;
+            if (lang.startsWith('zh')) return 'zh';
+            return 'en';
+        }
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+            document.title = i18n[lang].title;
+
+            // Update all i18n elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    el.innerHTML = i18n[lang][key];
+                }
             });
 
-            // 打开选中的
-            event.currentTarget.classList.add('active');
+            // Update toggle buttons
+            document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+        }
+
+        function toggleMethod(method, card) {
+            document.querySelectorAll('.method-card').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.qr-area').forEach(qr => qr.classList.remove('active'));
+            document.querySelectorAll('.stripe-section').forEach(s => s.classList.remove('active'));
+
+            card.classList.add('active');
 
             if (method === 'wechat') {
                 document.getElementById('qr-wechat').classList.add('active');
@@ -484,16 +524,8 @@
             }
         }
 
-        // 金额选择
-        document.querySelectorAll('.amount-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                this.parentElement.querySelectorAll('.amount-btn').forEach(b => {
-                    b.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
-        });
+        // Auto-detect language on load
+        setLang(detectLang());
     </script>
 </body>
 </html>
