@@ -192,8 +192,9 @@
         }
 
         .qr-area img {
-            width: 220px;
-            height: 220px;
+            max-width: 220px;
+            width: 100%;
+            height: auto;
             border-radius: 12px;
             border: 2px solid #222;
         }
@@ -387,15 +388,8 @@
                     <span class="method-badge recommended">推荐</span>
                 </div>
                 <div class="qr-area" id="qr-wechat">
-                    <!-- 替换为你的微信收款码 -->
                     <img src="images/wechat-qr.png" alt="微信收款码" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22><rect fill=%22%231a1a1a%22 width=%22220%22 height=%22220%22/><text x=%22110%22 y=%22115%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2214%22>请放置微信收款码</text></svg>'">
-                    <p>打开微信扫一扫</p>
-                    <div class="amounts">
-                        <button class="amount-btn" onclick="event.stopPropagation()">☕ ¥5</button>
-                        <button class="amount-btn active" onclick="event.stopPropagation()">🍔 ¥15</button>
-                        <button class="amount-btn" onclick="event.stopPropagation()">🍕 ¥30</button>
-                        <button class="amount-btn" onclick="event.stopPropagation()">❤️ 自定义</button>
-                    </div>
+                    <p>打开微信扫一扫，金额自定</p>
                 </div>
             </div>
 
@@ -410,9 +404,8 @@
                     <span class="method-badge">快捷</span>
                 </div>
                 <div class="qr-area" id="qr-alipay">
-                    <!-- 替换为你的支付宝收款码 -->
                     <img src="images/alipay-qr.png" alt="支付宝收款码" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22><rect fill=%22%231a1a1a%22 width=%22220%22 height=%22220%22/><text x=%22110%22 y=%22115%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2214%22>请放置支付宝收款码</text></svg>'">
-                    <p>打开支付宝扫一扫</p>
+                    <p>打开支付宝扫一扫，金额自定</p>
                 </div>
             </div>
 
@@ -434,7 +427,7 @@
                            style="display: inline-block; background: #635BFF; color: white; padding: 14px 32px; border-radius: 10px; text-decoration: none; font-size: 15px; font-weight: 600; transition: background 0.2s;"
                            onmouseover="this.style.background='#7A73FF'"
                            onmouseout="this.style.background='#635BFF'">
-                            💳 支持 $1.00 HKD
+                            💳 支持 $5.00 HKD
                         </a>
                         <p style="color: #555; margin-top: 12px; font-size: 12px;">点击后将跳转到 Stripe 安全支付页面</p>
                     </div>
