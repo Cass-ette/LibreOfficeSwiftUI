@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibreOffice SwiftUI - 支持我们</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Helvetica, Arial, sans-serif;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 680px;
+            width: 100%;
+            padding: 40px 24px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .header .icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #4A90D9, #2E5C8A);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 36px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 15px;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        /* Progress */
+        .progress-section {
+            background: #141414;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+            border: 1px solid #222;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .progress-label .amount {
+            color: #4A90D9;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #222;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4A90D9, #6BB5FF);
+            border-radius: 3px;
+            width: 15%;
+            transition: width 1s ease;
+        }
+
+        /* Donation methods */
+        .methods {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .method-card {
+            background: #141414;
+            border: 1px solid #222;
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .method-card:hover {
+            border-color: #333;
+            transform: translateY(-1px);
+        }
+
+        .method-card.active {
+            border-color: #4A90D9;
+            background: #141a24;
+        }
+
+        .method-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 4px;
+        }
+
+        .method-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .method-icon.wechat {
+            background: #07C160;
+        }
+
+        .method-icon.alipay {
+            background: #1677FF;
+        }
+
+        .method-icon.stripe {
+            background: #635BFF;
+        }
+
+        .method-info h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .method-info p {
+            font-size: 13px;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .method-badge {
+            margin-left: auto;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: #1a1a1a;
+            color: #666;
+            border: 1px solid #222;
+        }
+
+        .method-badge.recommended {
+            background: #1a2418;
+            color: #4ADE80;
+            border-color: #2a3a28;
+        }
+
+        /* QR Code area */
+        .qr-area {
+            display: none;
+            text-align: center;
+            padding: 20px 0 0;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .qr-area.active {
+            display: block;
+        }
+
+        .qr-area img {
+            width: 220px;
+            height: 220px;
+            border-radius: 12px;
+            border: 2px solid #222;
+        }
+
+        .qr-area p {
+            font-size: 13px;
+            color: #666;
+            margin-top: 12px;
+        }
+
+        .qr-area .amount-hint {
+            font-size: 12px;
+            color: #4A90D9;
+            margin-top: 6px;
+        }
+
+        /* Suggested amounts */
+        .amounts {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .amount-btn {
+            padding: 10px;
+            background: #1a1a1a;
+            border: 1px solid #222;
+            border-radius: 10px;
+            color: #ccc;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .amount-btn:hover {
+            border-color: #4A90D9;
+            color: #fff;
+        }
+
+        .amount-btn.active {
+            background: #1a2440;
+            border-color: #4A90D9;
+            color: #4A90D9;
+        }
+
+        /* Stripe section */
+        .stripe-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .stripe-section.active {
+            display: block;
+        }
+
+        .stripe-coming {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stripe-coming .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #1a1a1a;
+            border: 1px solid #222;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        /* Supporters */
+        .supporters {
+            margin-top: 40px;
+            padding-top: 32px;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        .supporters h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #888;
+            margin-bottom: 16px;
+        }
+
+        .supporter-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .supporter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #141414;
+            border: 1px solid #222;
+            border-radius: 20px;
+            padding: 6px 14px 6px 6px;
+            font-size: 13px;
+        }
+
+        .supporter .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        .footer a {
+            color: #4A90D9;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer .links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 16px;
+        }
+
+        .footer .license {
+            font-size: 12px;
+            color: #444;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .container { padding: 24px 16px; }
+            .header h1 { font-size: 22px; }
+            .amounts { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="icon">📄</div>
+            <h1>支持 LibreOffice SwiftUI</h1>
+            <p>一个用 SwiftUI 重写 LibreOffice macOS 前端的开源项目。<br>你的每一份支持都让这个项目走得更远。</p>
+        </div>
+
+        <!-- Monthly Goal -->
+        <div class="progress-section">
+            <div class="progress-label">
+                <span>月度目标</span>
+                <span class="amount">¥150 / ¥1,000</span>
+            </div>
+            <div class="progress-bar">
+                <div class="fill"></div>
+            </div>
+        </div>
+
+        <!-- Payment Methods -->
+        <div class="methods">
+            <!-- WeChat -->
+            <div class="method-card" onclick="toggleMethod('wechat')">
+                <div class="method-header">
+                    <div class="method-icon wechat">💬</div>
+                    <div class="method-info">
+                        <h3>微信支付</h3>
+                        <p>扫码即可，无需添加好友</p>
+                    </div>
+                    <span class="method-badge recommended">推荐</span>
+                </div>
+                <div class="qr-area" id="qr-wechat">
+                    <!-- 替换为你的微信收款码 -->
+                    <img src="images/wechat-qr.png" alt="微信收款码" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22><rect fill=%22%231a1a1a%22 width=%22220%22 height=%22220%22/><text x=%22110%22 y=%22115%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2214%22>请放置微信收款码</text></svg>'">
+                    <p>打开微信扫一扫</p>
+                    <div class="amounts">
+                        <button class="amount-btn" onclick="event.stopPropagation()">☕ ¥5</button>
+                        <button class="amount-btn active" onclick="event.stopPropagation()">🍔 ¥15</button>
+                        <button class="amount-btn" onclick="event.stopPropagation()">🍕 ¥30</button>
+                        <button class="amount-btn" onclick="event.stopPropagation()">❤️ 自定义</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alipay -->
+            <div class="method-card" onclick="toggleMethod('alipay')">
+                <div class="method-header">
+                    <div class="method-icon alipay">🔷</div>
+                    <div class="method-info">
+                        <h3>支付宝</h3>
+                        <p>支持花呗、余额宝</p>
+                    </div>
+                    <span class="method-badge">快捷</span>
+                </div>
+                <div class="qr-area" id="qr-alipay">
+                    <!-- 替换为你的支付宝收款码 -->
+                    <img src="images/alipay-qr.png" alt="支付宝收款码" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22220%22 height=%22220%22><rect fill=%22%231a1a1a%22 width=%22220%22 height=%22220%22/><text x=%22110%22 y=%22115%22 text-anchor=%22middle%22 fill=%22%23666%22 font-size=%2214%22>请放置支付宝收款码</text></svg>'">
+                    <p>打开支付宝扫一扫</p>
+                </div>
+            </div>
+
+            <!-- Stripe (International) -->
+            <div class="method-card" onclick="toggleMethod('stripe')">
+                <div class="method-header">
+                    <div class="method-icon stripe">💳</div>
+                    <div class="method-info">
+                        <h3>International (Card)</h3>
+                        <p>Visa / Mastercard / Apple Pay</p>
+                    </div>
+                    <span class="method-badge">USD / HKD</span>
+                </div>
+                <div class="stripe-section" id="stripe-section">
+                    <div class="stripe-coming">
+                        <span class="badge">即将上线</span>
+                        <p>Stripe 国际支付正在接入中，敬请期待！</p>
+                        <p style="color: #555; margin-top: 8px; font-size: 12px;">支持 Visa、Mastercard、Apple Pay</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Supporters -->
+        <div class="supporters">
+            <h3>感谢这些支持者 ❤️</h3>
+            <div class="supporter-list">
+                <div class="supporter">
+                    <span class="avatar">🫡</span>
+                    <span>成为第一个支持者</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="links">
+                <a href="https://github.com/Cass-ette/LibreOfficeSwiftUI" target="_blank">GitHub</a>
+                <a href="https://github.com/Cass-ette/libreoffice-swiftui" target="_blank">上游仓库</a>
+                <a href="https://github.com/LibreOffice/core" target="_blank">LibreOffice</a>
+            </div>
+            <p class="license">
+                本项目基于 LibreOffice (MPL 2.0) 开发 · SwiftUI 前端采用 MIT 协议
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function toggleMethod(method) {
+            // 关闭所有
+            document.querySelectorAll('.method-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            document.querySelectorAll('.qr-area').forEach(qr => {
+                qr.classList.remove('active');
+            });
+            document.querySelectorAll('.stripe-section').forEach(s => {
+                s.classList.remove('active');
+            });
+
+            // 打开选中的
+            event.currentTarget.classList.add('active');
+
+            if (method === 'wechat') {
+                document.getElementById('qr-wechat').classList.add('active');
+            } else if (method === 'alipay') {
+                document.getElementById('qr-alipay').classList.add('active');
+            } else if (method === 'stripe') {
+                document.getElementById('stripe-section').classList.add('active');
+            }
+        }
+
+        // 金额选择
+        document.querySelectorAll('.amount-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.parentElement.querySelectorAll('.amount-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
